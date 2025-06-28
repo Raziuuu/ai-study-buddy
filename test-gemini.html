@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Gemini API Test</title>
+</head>
+<body>
+    <h1>Gemini API Test</h1>
+    <button onclick="testAPI()">Test Gemini API</button>
+    <div id="result"></div>
+
+    <script>
+        const API_KEY = 'AIzaSyCgFIsTG8D3b1DVj-mMh8D2y7QzagYF0VU';
+        const API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent';
+
+        async function testAPI() {
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = 'Testing...';
+            
+            try {
+                console.log('Testing Gemini API...');
+                
+                const response = await fetch(`${API_URL}?key=${API_KEY}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        contents: [{
+                            parts: [{
+                                text: "Hello, this is a test. Please respond with 'API is working' if you can see this message."
+                            }]
+                        }]
+                    })
+                });
+
+                console.log('Response status:', response.status);
+                console.log('Response headers:', response.headers);
+                
+                const data = await response.json();
+                console.log('Response data:', data);
+                
+                if (data.error) {
+                    resultDiv.innerHTML = `<p style="color: red;">❌ API Error: ${JSON.stringify(data.error, null, 2)}</p>`;
+                } else if (data.candidates && data.candidates[0]) {
+                    resultDiv.innerHTML = `<p style="color: green;">✅ API Working! Response: ${data.candidates[0].content.parts[0].text}</p>`;
+                } else {
+                    resultDiv.innerHTML = `<p style="color: orange;">⚠️ Unexpected response: ${JSON.stringify(data, null, 2)}</p>`;
+                }
+                
+            } catch (error) {
+                console.error('Error:', error);
+                resultDiv.innerHTML = `<p style="color: red;">❌ Network Error: ${error.message}</p>`;
+            }
+        }
+    </script>
+</body>
+</html> 
