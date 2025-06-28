@@ -112,4 +112,6 @@ For support, email support@aistudybuddy.com or create an issue in the repository
 
 ---
 
-**Made with ❤️ for better education** 
+**Made with ❤️ for better education**
+
+**🚀 Ready for deployment on Vercel!** 
